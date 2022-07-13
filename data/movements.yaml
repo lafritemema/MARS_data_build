@@ -1,0 +1,149 @@
+movements:
+  station:
+    variables:
+      - $station
+      - $area
+      - $rail
+    description: move to station position for $area works of rail $rail
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: NOT_EQUAL
+        state: $station # station uid, to be define in code
+        priority: 2
+    results:
+      - state_object: station
+        relation: EQUAL
+        state: $station  # station uid, to be define in code
+        description: at station position for $area works of rail $rail
+  approach:
+    variables:
+        - $station
+        - $effector
+        - $approach
+        - $area
+        - $rail
+    description: move to the approach position for $area works of rail $rail
+    preconditions:
+      - state_object: effector
+        relation: EQUAL
+        state: $effector # effector uid, to be define in code
+        priority: 1
+      - state_object: station
+        relation: EQUAL
+        state: $station  # station uid, to be define in code
+        priority: 2
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 3
+    results:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: $approach # tcp_approach uid, to be define in code
+        description: at approach position for $area works of rail $rail
+  clearance:
+    variables:
+        - $station
+        - $effector
+        - $approach
+        - $area
+        - $rail
+    description: move from position in $area works of rail $rail to arm move station position
+    preconditions:
+      - state_object: effector
+        relation: EQUAL
+        state: $effector # effector uid, to be define in code
+        priority: 1
+      - state_object: station
+        relation: EQUAL
+        state: $station  # station uid, to be define in code
+        priority: 2
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: $approach
+        priority: 3
+    results:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position # tcp_approach uid, to be define in code
+        description: at arm move station position
+      - state_object: tcp_work
+        relation: EQUAL
+        state: out_work # tcp_approach uid, to be define in code
+        description: not at any work position
+  work:
+    variables:
+          - $station
+          - $effector
+          - $approach
+          - $kfront
+          - $krear
+          - $work
+          - $assembly
+    description: move to position for works on $assembly
+    preconditions:
+      - state_object: $kfront # ref point in front, to be define in code
+        relation: EQUAL
+        state: probed 
+        priority: 1
+      - state_object: $krear  # ref point in rear, to be define in code
+        relation: EQUAL
+        state: probed # effector uid, to be define in code
+        priority: 2
+      - state_object: effector
+        relation: EQUAL
+        state: $effector # effector uid, to be define in code
+        priority: 3
+      - state_object: station
+        relation: EQUAL
+        state: $station  # station uid, to be define in code
+        priority: 4
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: $approach  # approach uid, to be define in code
+        priority: 5
+      - state_object: tcp_work
+        relation: NOT_EQUAL
+        state: $work  # work uid, to be define in code
+        priority: 6
+    results:
+      - state_object: tcp_work
+        relation: EQUAL
+        state: $work # tcp_approach uid, to be define in code
+        description: at position for works on $assembly
+  home:
+    description: move to home position
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: NOT_EQUAL
+        state: home_station
+        priority: 2
+    results:
+      - state_object: station
+        relation: EQUAL
+        state: home_station
+        description: at home station
+  tool:
+    description: move to load/unload tool position
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: NOT_EQUAL
+        state: tool_station
+        priority: 2
+    results:
+      - state_object: station
+        relation: EQUAL
+        state: tool_station
+        description: at load/unload tool station

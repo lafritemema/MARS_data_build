@@ -1,0 +1,17 @@
+flange_c_drilling:
+  description: "C drilling effector for flange assemblies"
+  interface: PROXY
+  type: ENDEFFECTOR
+web_c_drilling:
+  description: "C drilling effector for web assemblies"
+  interface: PROXY
+  type: ENDEFFECTOR
+mars:
+  description: rail splicing robotic cell
+  interface: PROXY
+  type: CARRIER
+human:
+  description: robot operator
+  interface: HMI
+  type: CARRIER
+

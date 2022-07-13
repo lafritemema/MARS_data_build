@@ -1,0 +1,3 @@
+rail,rail_work_order,localisation,mvt,designation,reference,id,work_order,point,path,position_type,speed,cnt,x_j1,y_j2,z_j3,w_j4,p_j5,r_j6,e1,wrist,forearm,arm,conf_j1,conf_j4,conf_j6,UF,UT
+0,,ALL,home,home,,0,0,0,JOINT,JOINT,75.00,0.00,0.00,18.51,-39.04,0.00,106.04,45.00,100.00,,,,,,,3,3
+0,,ALL,tool,tool,,0,0,0,JOINT,JOINT,75.00,0.00,0.00,18.51,-39.04,0.00,106.04,45.00,330.00,,,,,,,3,3

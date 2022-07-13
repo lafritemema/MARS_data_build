@@ -1,0 +1,93 @@
+manipulations:
+  - operation: LOAD  # WEB C DRILLING
+    equipment:
+      type: EFFECTOR
+      reference: WEB_C_DRILLING
+    description: load web C drilling effector
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: EQUAL
+        state: tool_station
+        priority: 2
+      - state_object: effector
+        relation: EQUAL
+        state: no_effector
+        priority: 3
+    results:
+      - state_object: effector
+        relation: EQUAL
+        state: web_c_drilling
+        description: web C drilling effector loaded
+  - operation: UNLOAD  # WEB C DRILLING
+    equipment:
+      type: EFFECTOR
+      reference: WEB_C_DRILLING
+    description: unload web C drilling effector
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: EQUAL
+        state: tool_station
+        priority: 2
+      - state_object: effector
+        relation: EQUAL
+        state: web_c_drilling
+        priority: 3
+    results:
+      - state_object: effector
+        relation: EQUAL
+        state: no_effector
+        description: web C drilling effector unloaded
+  - operation: LOAD  # FLANGE C DRILLING
+    equipment:
+      type: EFFECTOR
+      reference: FLANGE_C_DRILLING
+    description: load flange C drilling effector
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: EQUAL
+        state: tool_station
+        priority: 2
+      - state_object: effector
+        relation: EQUAL
+        state: no_effector
+        priority: 3
+    results:
+      - state_object: effector
+        relation: EQUAL
+        state: flange_c_drilling
+        description: flange C drilling effector loaded
+  - operation: UNLOAD  # FLANGE C DRILLING
+    equipment:
+      type: EFFECTOR
+      reference: FLANGE_C_DRILLING
+    description: unload flange C drilling effector
+    preconditions:
+      - state_object: tcp_approach
+        relation: EQUAL
+        state: move_station_position
+        priority: 1
+      - state_object: station
+        relation: EQUAL
+        state: tool_station
+        priority: 2
+      - state_object: effector
+        relation: EQUAL
+        state: flange_c_drilling
+        priority: 3
+    results:
+      - state_object: effector
+        relation: EQUAL
+        state: no_effector
+        description: flange C drilling effector unloaded
