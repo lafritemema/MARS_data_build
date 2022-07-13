@@ -1,0 +1,3 @@
+[submodule "neo4mars"]
+	path = neo4mars
+	url = https://github.com/lafritemema/MARS_neo4mars.git
