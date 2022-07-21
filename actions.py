@@ -336,7 +336,7 @@ class ActionsData:
       # build data to fill config
       config_args = {}
       if '$area' in config_var:
-        config_args['$station'] = ' '.join([rail_area] + sides).lower()
+        config_args['$area'] = ' '.join([rail_area] + sides).lower()
         config_args['$rail'] =  rail_position
       if '$station' in config_var:
         config_args['$station'] = '_'.join([rail_area, rail_position] + sides).lower()
@@ -399,7 +399,7 @@ class ActionsData:
     pattern = []
     operations = []
 
-    if mvt_type in ['work', 'approach', 'clearance']:
+    if mvt_type in ['work', 'approach', 'clearance', 'station']:
       if rail_area == 'web':
         assets.append(assets_data.assets.get('web_c_drilling'))
         pattern.append(pattern_data.areas.get('web'))
@@ -538,6 +538,7 @@ class ActionsData:
     
     action_type = 'WORK.PROBE'
     probing_effector = 'flange_c_drilling'
+    preconditions_stateobjects = ['tcp_work', 'station', 'effector', 'tcp_approach']
 
     probing_collection = {}
     probing_assies = states_data.get_probed_assy()
@@ -546,9 +547,18 @@ class ActionsData:
       work = works_movements.get(assy)
 
       assert work, f'the assembly {assy} not exist in work movement collection'
-
-      probing_preconditions = work.preconditions
       
+      # get probing precondition => work precondition - kf states relationship
+      probing_preconditions = [precondition for precondition in work.preconditions\
+                               if precondition.property_node.uid in preconditions_stateobjects]
+      
+      last_priority = probing_preconditions[-1].priority
+
+      probing_preconditions.append(PreconditionRS(property_node=stdef.node,
+                                                  relation=Relation.NOT_EQUAL,
+                                                  state='probed',
+                                                  priority=last_priority+1))
+
       probing_results = [ResultRS(property_node=stdef.node,
                                   relation=Relation.EQUAL,
                                   state='probed',
@@ -601,7 +611,7 @@ class ActionsData:
     drilling_collection = {}
 
     for assy, work_def in works_movements.items():
-      drilling_preconditions = work_def.preconditions
+      drilling_preconditions = work_def.preconditions.copy()
       last_priority = drilling_preconditions[-1].priority
       
       for result in work_def.results:
